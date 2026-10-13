@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pomodoro Timer</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#000;
+}
+
+.card{
+width:400px;
+padding:35px;
+background:rgba(255,255,255,.05);
+backdrop-filter:blur(15px);
+border:1px solid rgba(255,255,255,.08);
+border-radius:30px;
+text-align:center;
+color:white;
+}
+
+h1{
+letter-spacing:5px;
+font-size:2rem;
+margin-bottom:25px;
+color:#ddd;
+}
+
+.tabs{
+display:flex;
+background:#0d0d0d;
+padding:6px;
+border-radius:15px;
+margin-bottom:30px;
+}
+
+.tabs button{
+flex:1;
+padding:12px;
+border:none;
+background:none;
+color:#888;
+cursor:pointer;
+border-radius:10px;
+transition:.3s;
+}
+
+.tabs button.active{
+background:#222;
+color:white;
+}
+
+.timer-container{
+position:relative;
+width:260px;
+height:260px;
+margin:auto;
+}
+
+svg{
+transform:rotate(-90deg);
+}
+
+.bg{
+fill:none;
+stroke:#222;
+stroke-width:10;
+}
+
+.progress{
+fill:none;
+stroke:white;
+stroke-width:10;
+stroke-linecap:round;
+stroke-dasharray:628;
+stroke-dashoffset:0;
+transition:1s linear;
+}
+
+.time-box{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+}
+
+.time-box h2{
+font-size:4rem;
+}
+
+.time-box p{
+margin-top:10px;
+color:#888;
+letter-spacing:2px;
+}
+
+.dots{
+margin:20px 0;
+}
+
+.dot{
+display:inline-block;
+width:10px;
+height:10px;
+border-radius:50%;
+background:#333;
+margin:0 5px;
+}
+
+.dot.active{
+background:white;
+}
+
+.controls{
+display:flex;
+justify-content:center;
+gap:15px;
+margin-top:15px;
+}
+
+.controls button{
+padding:14px 20px;
+border:none;
+border-radius:15px;
+background:#111;
+color:white;
+cursor:pointer;
+font-size:18px;
+}
+
+#startBtn{
+background:white;
+color:black;
+font-weight:bold;
+min-width:120px;
+}
+
+.stats{
+margin-top:30px;
+padding-top:20px;
+border-top:1px solid #222;
+display:flex;
+justify-content:space-around;
+}
+
+.stats h3{
+font-size:2rem;
+}
+
+.stats p{
+color:#777;
+font-size:12px;
+margin-top:5px;
+letter-spacing:1px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h1>POMODORO</h1>
+
+<div class="tabs">
+<button class="active" id="focusTab">Focus</button>
+<button id="shortTab">Short Break</button>
+<button id="longTab">Long Break</button>
+</div>
+
+<div class="timer-container">
+
+<svg width="260" height="260">
+<circle class="bg" cx="130" cy="130" r="100"></circle>
+<circle class="progress" cx="130" cy="130" r="100"></circle>
+</svg>
+
+<div class="time-box">
+<h2 id="timer">25:00</h2>
+<p id="mode">FOCUS TIME</p>
+</div>
+
+</div>
+
+<div class="dots">
+<span class="dot active"></span>
+<span class="dot"></span>
+<span class="dot"></span>
+<span class="dot"></span>
+</div>
+
+<div class="controls">
+<button id="resetBtn">↺</button>
+<button id="startBtn">Start</button>
+<button id="skipBtn">⏭</button>
+</div>
+
+<div class="stats">
+<div>
+<h3 id="sessions">0</h3>
+<p>SESSIONS</p>
+</div>
+
+<div>
+<h3 id="minutes">0</h3>
+<p>MINUTES</p>
+</div>
+</div>
+
+</div>
+
+<script>
+
+let focusTime = 25*60;
+let shortBreak = 5*60;
+let longBreak = 15*60;
+
+let totalTime = focusTime;
+let timeLeft = focusTime;
+
+let running = false;
+let interval;
+
+let sessionCount = 0;
+let minutesStudied = 0;
+
+const timer = document.getElementById("timer");
+const mode = document.getElementById("mode");
+const progress = document.querySelector(".progress");
+const startBtn = document.getElementById("startBtn");
+
+const circumference = 628;
+progress.style.strokeDasharray = circumference;
+
+function updateTimer(){
+
+let mins = Math.floor(timeLeft/60);
+let secs = timeLeft%60;
+
+timer.textContent =
+`${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+
+let percent = timeLeft/totalTime;
+
+progress.style.strokeDashoffset =
+circumference*(1-percent);
+}
+
+function startPause(){
+
+if(running){
+
+clearInterval(interval);
+running=false;
+startBtn.textContent="Start";
+return;
+}
+
+running=true;
+startBtn.textContent="Pause";
+
+interval=setInterval(()=>{
+
+timeLeft--;
+
+updateTimer();
+
+if(timeLeft<=0){
+
+clearInterval(interval);
+
+let beep = new Audio(
+"https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"
+);
+beep.play();
+
+running=false;
+startBtn.textContent="Start";
+
+if(mode.textContent==="FOCUS TIME"){
+sessionCount++;
+minutesStudied += 25;
+
+document.getElementById("sessions").textContent=sessionCount;
+document.getElementById("minutes").textContent=minutesStudied;
+}
+
+alert("Session Complete!");
+
+}
+
+},1000);
+
+}
+
+function resetTimer(){
+
+clearInterval(interval);
+running=false;
+startBtn.textContent="Start";
+
+timeLeft=totalTime;
+
+updateTimer();
+}
+
+function setMode(seconds,label){
+
+clearInterval(interval);
+running=false;
+
+document.querySelectorAll(".tabs button")
+.forEach(btn=>btn.classList.remove("active"));
+
+event.target.classList.add("active");
+
+timeLeft=seconds;
+totalTime=seconds;
+
+mode.textContent=label;
+
+startBtn.textContent="Start";
+
+updateTimer();
+}
+
+document.getElementById("startBtn")
+.addEventListener("click",startPause);
+
+document.getElementById("resetBtn")
+.addEventListener("click",resetTimer);
+
+document.getElementById("skipBtn")
+.addEventListener("click",()=>{
+
+clearInterval(interval);
+running=false;
+
+timeLeft=0;
+updateTimer();
+});
+
+document.getElementById("focusTab")
+.addEventListener("click",(event)=>{
+setMode(focusTime,"FOCUS TIME");
+});
+
+document.getElementById("shortTab")
+.addEventListener("click",(event)=>{
+setMode(shortBreak,"SHORT BREAK");
+});
+
+document.getElementById("longTab")
+.addEventListener("click",(event)=>{
+setMode(longBreak,"LONG BREAK");
+});
+
+updateTimer();
+
+</script>
+
+</body>
+</html>
