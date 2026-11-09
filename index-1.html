@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,15 +15,17 @@ font-family:'Segoe UI',sans-serif;
 }
 
 body{
-height:100vh;
+min-height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
 background:#000;
+padding:20px;
 }
 
 .card{
 width:400px;
+max-width:100%;
 padding:35px;
 background:rgba(255,255,255,.05);
 backdrop-filter:blur(15px);
@@ -49,7 +52,7 @@ margin-bottom:30px;
 
 .tabs button{
 flex:1;
-padding:12px;
+padding:12px 5px;
 border:none;
 background:none;
 color:#888;
@@ -148,6 +151,19 @@ font-weight:bold;
 min-width:120px;
 }
 
+#stopVoiceBtn{
+display:none;
+margin:20px auto 0;
+padding:13px 22px;
+border:none;
+border-radius:12px;
+background:#e63946;
+color:white;
+cursor:pointer;
+font-size:15px;
+font-weight:bold;
+}
+
 .stats{
 margin-top:30px;
 padding-top:20px;
@@ -208,7 +224,10 @@ letter-spacing:1px;
 <button id="skipBtn">⏭</button>
 </div>
 
+<button id="stopVoiceBtn">🔇 Stop Speaking</button>
+
 <div class="stats">
+
 <div>
 <h3 id="sessions">0</h3>
 <p>SESSIONS</p>
@@ -218,11 +237,14 @@ letter-spacing:1px;
 <h3 id="minutes">0</h3>
 <p>MINUTES</p>
 </div>
+
 </div>
 
 </div>
 
 <script>
+
+// Timer durations
 
 let focusTime = 25*60;
 let shortBreak = 5*60;
@@ -237,136 +259,308 @@ let interval;
 let sessionCount = 0;
 let minutesStudied = 0;
 
+// HTML Elements
+
 const timer = document.getElementById("timer");
 const mode = document.getElementById("mode");
 const progress = document.querySelector(".progress");
 const startBtn = document.getElementById("startBtn");
+const stopVoiceBtn = document.getElementById("stopVoiceBtn");
 
 const circumference = 628;
+
 progress.style.strokeDasharray = circumference;
+
+
+// VOICE ALERT FEATURE
+
+let voiceActive = false;
+let voiceTimeout;
+
+function startVoiceAlert(message){
+
+    stopVoiceAlert();
+
+    voiceActive = true;
+
+    function speakMessage(){
+
+        if(!voiceActive) return;
+
+        let speech = new SpeechSynthesisUtterance(message);
+
+        speech.rate = 0.9;
+        speech.pitch = 1;
+        speech.volume = 1;
+
+        speech.onend = function(){
+
+            if(voiceActive){
+
+                voiceTimeout = setTimeout(
+                    speakMessage, 1000
+                );
+
+            }
+
+        };
+
+        window.speechSynthesis.speak(speech);
+
+    }
+
+    stopVoiceBtn.style.display = "block";
+
+    speakMessage();
+
+}
+
+
+function stopVoiceAlert(){
+
+    voiceActive = false;
+
+    clearTimeout(voiceTimeout);
+
+    window.speechSynthesis.cancel();
+
+    stopVoiceBtn.style.display = "none";
+
+}
+
+
+// Stop Speaking Button
+
+stopVoiceBtn.addEventListener(
+    "click",
+    stopVoiceAlert
+);
+
+
+// UPDATE TIMER
 
 function updateTimer(){
 
-let mins = Math.floor(timeLeft/60);
-let secs = timeLeft%60;
+    let mins = Math.floor(timeLeft/60);
+    let secs = timeLeft%60;
 
-timer.textContent =
-`${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+    timer.textContent =
+    `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
 
-let percent = timeLeft/totalTime;
+    let percent = timeLeft/totalTime;
 
-progress.style.strokeDashoffset =
-circumference*(1-percent);
+    progress.style.strokeDashoffset =
+    circumference*(1-percent);
+
 }
+
+
+// TIMER COMPLETION
+
+function completeTimer(){
+
+    clearInterval(interval);
+
+    running = false;
+
+    timeLeft = 0;
+
+    updateTimer();
+
+    startBtn.textContent = "Start";
+
+    // Focus completed
+
+    if(mode.textContent === "FOCUS TIME"){
+
+        sessionCount++;
+
+        minutesStudied += Math.floor(totalTime/60);
+
+        document.getElementById("sessions").textContent =
+        sessionCount;
+
+        document.getElementById("minutes").textContent =
+        minutesStudied;
+
+        startVoiceAlert(
+            "Focus session completed! Time for a break."
+        );
+
+    }
+
+    // Short break completed
+
+    else if(mode.textContent === "SHORT BREAK"){
+
+        startVoiceAlert(
+            "Short break is over! Time to focus."
+        );
+
+    }
+
+    // Long break completed
+
+    else if(mode.textContent === "LONG BREAK"){
+
+        startVoiceAlert(
+            "Long break is over! Time to focus."
+        );
+
+    }
+
+}
+
+
+// START / PAUSE TIMER
 
 function startPause(){
 
-if(running){
+    if(running){
 
-clearInterval(interval);
-running=false;
-startBtn.textContent="Start";
-return;
+        clearInterval(interval);
+
+        running = false;
+
+        startBtn.textContent = "Start";
+
+        return;
+
+    }
+
+    // Stop any previous voice alert
+
+    stopVoiceAlert();
+
+    if(timeLeft <= 0){
+        return;
+    }
+
+    running = true;
+
+    startBtn.textContent = "Pause";
+
+    interval = setInterval(()=>{
+
+        if(timeLeft > 0){
+
+            timeLeft--;
+
+            updateTimer();
+
+        }
+
+        if(timeLeft <= 0){
+
+            completeTimer();
+
+        }
+
+    },1000);
+
 }
 
-running=true;
-startBtn.textContent="Pause";
 
-interval=setInterval(()=>{
-
-timeLeft--;
-
-updateTimer();
-
-if(timeLeft<=0){
-
-clearInterval(interval);
-
-let beep = new Audio(
-"https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"
-);
-beep.play();
-
-running=false;
-startBtn.textContent="Start";
-
-if(mode.textContent==="FOCUS TIME"){
-sessionCount++;
-minutesStudied += 25;
-
-document.getElementById("sessions").textContent=sessionCount;
-document.getElementById("minutes").textContent=minutesStudied;
-}
-
-alert("Session Complete!");
-
-}
-
-},1000);
-
-}
+// RESET TIMER
 
 function resetTimer(){
 
-clearInterval(interval);
-running=false;
-startBtn.textContent="Start";
+    stopVoiceAlert();
 
-timeLeft=totalTime;
+    clearInterval(interval);
 
-updateTimer();
+    running = false;
+
+    startBtn.textContent = "Start";
+
+    timeLeft = totalTime;
+
+    updateTimer();
+
 }
 
-function setMode(seconds,label){
 
-clearInterval(interval);
-running=false;
+// CHANGE MODE
 
-document.querySelectorAll(".tabs button")
-.forEach(btn=>btn.classList.remove("active"));
+function setMode(seconds,label,button){
 
-event.target.classList.add("active");
+    stopVoiceAlert();
 
-timeLeft=seconds;
-totalTime=seconds;
+    clearInterval(interval);
 
-mode.textContent=label;
+    running = false;
 
-startBtn.textContent="Start";
+    document.querySelectorAll(".tabs button")
+    .forEach(btn=>btn.classList.remove("active"));
 
-updateTimer();
+    button.classList.add("active");
+
+    timeLeft = seconds;
+
+    totalTime = seconds;
+
+    mode.textContent = label;
+
+    startBtn.textContent = "Start";
+
+    updateTimer();
+
 }
+
+
+// BUTTON EVENTS
 
 document.getElementById("startBtn")
 .addEventListener("click",startPause);
 
+
 document.getElementById("resetBtn")
 .addEventListener("click",resetTimer);
+
 
 document.getElementById("skipBtn")
 .addEventListener("click",()=>{
 
-clearInterval(interval);
-running=false;
+    stopVoiceAlert();
 
-timeLeft=0;
-updateTimer();
+    clearInterval(interval);
+
+    running = false;
+
+    startBtn.textContent = "Start";
+
+    timeLeft = 0;
+
+    updateTimer();
+
 });
+
 
 document.getElementById("focusTab")
 .addEventListener("click",(event)=>{
-setMode(focusTime,"FOCUS TIME");
+
+    setMode(focusTime,"FOCUS TIME",event.currentTarget);
+
 });
+
 
 document.getElementById("shortTab")
 .addEventListener("click",(event)=>{
-setMode(shortBreak,"SHORT BREAK");
+
+    setMode(shortBreak,"SHORT BREAK",event.currentTarget);
+
 });
+
 
 document.getElementById("longTab")
 .addEventListener("click",(event)=>{
-setMode(longBreak,"LONG BREAK");
+
+    setMode(longBreak,"LONG BREAK",event.currentTarget);
+
 });
+
+
+// INITIAL TIMER
 
 updateTimer();
 
@@ -374,3 +568,4 @@ updateTimer();
 
 </body>
 </html>
+```
