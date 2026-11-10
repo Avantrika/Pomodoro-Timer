@@ -1,4 +1,5 @@
 ```html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,179 +9,297 @@
 
 <style>
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
 }
 
 body{
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:#000;
-padding:20px;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#000;
+    padding:20px;
 }
 
 .card{
-width:400px;
-max-width:100%;
-padding:35px;
-background:rgba(255,255,255,.05);
-backdrop-filter:blur(15px);
-border:1px solid rgba(255,255,255,.08);
-border-radius:30px;
-text-align:center;
-color:white;
+    width:420px;
+    max-width:100%;
+    padding:30px;
+    background:rgba(255,255,255,.05);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:30px;
+    text-align:center;
+    color:white;
 }
 
 h1{
-letter-spacing:5px;
-font-size:2rem;
-margin-bottom:25px;
-color:#ddd;
+    letter-spacing:5px;
+    font-size:2rem;
+    margin-bottom:20px;
+    color:#ddd;
+}
+
+.settings-btn{
+    background:#171717;
+    color:white;
+    border:1px solid #333;
+    padding:10px 18px;
+    border-radius:12px;
+    cursor:pointer;
+    margin-bottom:20px;
+}
+
+.settings{
+    display:none;
+    background:#111;
+    border:1px solid #333;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:25px;
+    text-align:left;
+}
+
+.settings h3{
+    margin-bottom:15px;
+}
+
+.setting-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin:14px 0;
+    color:#bbb;
+    font-size:14px;
+}
+
+.setting-row input[type="number"]{
+    width:85px;
+    padding:9px;
+    background:#222;
+    border:1px solid #444;
+    border-radius:8px;
+    color:white;
+    text-align:center;
+    outline:none;
+}
+
+.setting-row input[type="checkbox"]{
+    width:18px;
+    height:18px;
+    accent-color:white;
+}
+
+.save-btn{
+    width:100%;
+    padding:11px;
+    background:white;
+    color:black;
+    border:none;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:10px;
 }
 
 .tabs{
-display:flex;
-background:#0d0d0d;
-padding:6px;
-border-radius:15px;
-margin-bottom:30px;
+    display:flex;
+    background:#0d0d0d;
+    padding:6px;
+    border-radius:15px;
+    margin-bottom:30px;
 }
 
 .tabs button{
-flex:1;
-padding:12px 5px;
-border:none;
-background:none;
-color:#888;
-cursor:pointer;
-border-radius:10px;
-transition:.3s;
+    flex:1;
+    padding:12px 5px;
+    border:none;
+    background:none;
+    color:#888;
+    cursor:pointer;
+    border-radius:10px;
 }
 
 .tabs button.active{
-background:#222;
-color:white;
+    background:#222;
+    color:white;
 }
 
 .timer-container{
-position:relative;
-width:260px;
-height:260px;
-margin:auto;
+    position:relative;
+    width:260px;
+    height:260px;
+    margin:auto;
 }
 
 svg{
-transform:rotate(-90deg);
+    transform:rotate(-90deg);
 }
 
 .bg{
-fill:none;
-stroke:#222;
-stroke-width:10;
+    fill:none;
+    stroke:#222;
+    stroke-width:10;
 }
 
 .progress{
-fill:none;
-stroke:white;
-stroke-width:10;
-stroke-linecap:round;
-stroke-dasharray:628;
-stroke-dashoffset:0;
-transition:1s linear;
+    fill:none;
+    stroke:white;
+    stroke-width:10;
+    stroke-linecap:round;
+    stroke-dasharray:628;
+    stroke-dashoffset:0;
+    transition:1s linear;
 }
 
 .time-box{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
 }
 
 .time-box h2{
-font-size:4rem;
+    font-size:4rem;
 }
 
 .time-box p{
-margin-top:10px;
-color:#888;
-letter-spacing:2px;
+    margin-top:10px;
+    color:#888;
+    letter-spacing:2px;
 }
 
 .dots{
-margin:20px 0;
+    margin:20px 0;
 }
 
 .dot{
-display:inline-block;
-width:10px;
-height:10px;
-border-radius:50%;
-background:#333;
-margin:0 5px;
+    display:inline-block;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:#333;
+    margin:0 5px;
 }
 
 .dot.active{
-background:white;
+    background:white;
 }
 
 .controls{
-display:flex;
-justify-content:center;
-gap:15px;
-margin-top:15px;
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-top:15px;
 }
 
 .controls button{
-padding:14px 20px;
-border:none;
-border-radius:15px;
-background:#111;
-color:white;
-cursor:pointer;
-font-size:18px;
+    padding:14px 20px;
+    border:none;
+    border-radius:15px;
+    background:#111;
+    color:white;
+    cursor:pointer;
+    font-size:18px;
 }
 
 #startBtn{
-background:white;
-color:black;
-font-weight:bold;
-min-width:120px;
+    background:white;
+    color:black;
+    font-weight:bold;
+    min-width:120px;
+}
+
+.alarm-panel{
+    display:none;
+    background:#171717;
+    border:1px solid #444;
+    border-radius:18px;
+    padding:20px;
+    margin-top:22px;
+}
+
+.alarm-panel h3{
+    margin-bottom:10px;
+    color:white;
+}
+
+.alarm-panel p{
+    color:#aaa;
+    font-size:13px;
+    margin-bottom:15px;
+}
+
+.alarm-buttons{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.alarm-buttons button{
+    padding:11px 14px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+#studyBtn{
+    background:white;
+    color:black;
+}
+
+#snooze5{
+    background:#333;
+    color:white;
+}
+
+#snooze10{
+    background:#333;
+    color:white;
 }
 
 #stopVoiceBtn{
-display:none;
-margin:20px auto 0;
-padding:13px 22px;
-border:none;
-border-radius:12px;
-background:#e63946;
-color:white;
-cursor:pointer;
-font-size:15px;
-font-weight:bold;
+    display:none;
+    margin:15px auto 0;
+    padding:10px 18px;
+    border:none;
+    border-radius:12px;
+    background:#e63946;
+    color:white;
+    cursor:pointer;
 }
 
 .stats{
-margin-top:30px;
-padding-top:20px;
-border-top:1px solid #222;
-display:flex;
-justify-content:space-around;
+    margin-top:30px;
+    padding-top:20px;
+    border-top:1px solid #222;
+    display:flex;
+    justify-content:space-around;
 }
 
 .stats h3{
-font-size:2rem;
+    font-size:2rem;
 }
 
 .stats p{
-color:#777;
-font-size:12px;
-margin-top:5px;
-letter-spacing:1px;
+    color:#777;
+    font-size:12px;
+    margin-top:5px;
+    letter-spacing:1px;
+}
+
+@media(max-width:450px){
+    .card{padding:20px;}
+    .timer-container{
+        transform:scale(.9);
+        margin:-10px auto;
+    }
 }
 </style>
 </head>
@@ -191,80 +310,192 @@ letter-spacing:1px;
 
 <h1>POMODORO</h1>
 
-<div class="tabs">
-<button class="active" id="focusTab">Focus</button>
-<button id="shortTab">Short Break</button>
-<button id="longTab">Long Break</button>
+<button class="settings-btn" id="settingsBtn">
+    ⚙ Timer Settings
+</button>
+
+<!-- SETTINGS PANEL -->
+
+<div class="settings" id="settingsPanel">
+
+    <h3>⏰ Timer Settings</h3>
+
+    <div class="setting-row">
+        <label>Focus Duration (minutes)</label>
+        <input type="number" id="focusInput"
+               min="1" max="180" value="25">
+    </div>
+
+    <div class="setting-row">
+        <label>Short Break (minutes)</label>
+        <input type="number" id="shortInput"
+               min="1" max="60" value="5">
+    </div>
+
+    <div class="setting-row">
+        <label>Long Break (minutes)</label>
+        <input type="number" id="longInput"
+               min="1" max="60" value="15">
+    </div>
+
+    <div class="setting-row">
+        <label>Enable Break Alarm</label>
+        <input type="checkbox" id="alarmToggle" checked>
+    </div>
+
+    <button class="save-btn" id="saveSettings">
+        Save Settings
+    </button>
+
 </div>
+
+
+<!-- TIMER TABS -->
+
+<div class="tabs">
+
+    <button class="active" id="focusTab">Focus</button>
+    <button id="shortTab">Short Break</button>
+    <button id="longTab">Long Break</button>
+
+</div>
+
+
+<!-- CIRCULAR TIMER -->
 
 <div class="timer-container">
 
-<svg width="260" height="260">
-<circle class="bg" cx="130" cy="130" r="100"></circle>
-<circle class="progress" cx="130" cy="130" r="100"></circle>
-</svg>
+    <svg width="260" height="260">
 
-<div class="time-box">
-<h2 id="timer">25:00</h2>
-<p id="mode">FOCUS TIME</p>
+        <circle class="bg"
+                cx="130" cy="130" r="100"></circle>
+
+        <circle class="progress"
+                cx="130" cy="130" r="100"></circle>
+
+    </svg>
+
+    <div class="time-box">
+
+        <h2 id="timer">25:00</h2>
+        <p id="mode">FOCUS TIME</p>
+
+    </div>
+
 </div>
 
-</div>
+
+<!-- SESSION DOTS -->
 
 <div class="dots">
-<span class="dot active"></span>
-<span class="dot"></span>
-<span class="dot"></span>
-<span class="dot"></span>
+
+    <span class="dot active"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+
 </div>
+
+
+<!-- TIMER CONTROLS -->
 
 <div class="controls">
-<button id="resetBtn">↺</button>
-<button id="startBtn">Start</button>
-<button id="skipBtn">⏭</button>
+
+    <button id="resetBtn">↺</button>
+    <button id="startBtn">Start</button>
+    <button id="skipBtn">⏭</button>
+
 </div>
 
-<button id="stopVoiceBtn">🔇 Stop Speaking</button>
+
+<!-- BREAK ALARM PANEL -->
+
+<div class="alarm-panel" id="alarmPanel">
+
+    <h3>🔔 Break Time Over!</h3>
+
+    <p>Your break is finished. Ready to focus again?</p>
+
+    <div class="alarm-buttons">
+
+        <button id="studyBtn">
+            Start Studying
+        </button>
+
+        <button id="snooze5">
+            Snooze 5 min
+        </button>
+
+        <button id="snooze10">
+            Snooze 10 min
+        </button>
+
+    </div>
+
+</div>
+
+
+<button id="stopVoiceBtn">
+    🔇 Stop Alarm
+</button>
+
+
+<!-- STATISTICS -->
 
 <div class="stats">
 
-<div>
-<h3 id="sessions">0</h3>
-<p>SESSIONS</p>
-</div>
+    <div>
+        <h3 id="sessions">0</h3>
+        <p>SESSIONS</p>
+    </div>
 
-<div>
-<h3 id="minutes">0</h3>
-<p>MINUTES</p>
-</div>
-
-</div>
+    <div>
+        <h3 id="minutes">0</h3>
+        <p>MINUTES</p>
+    </div>
 
 </div>
+
+</div>
+
 
 <script>
 
-// Timer durations
+// ------------------------------
+// TIMER DURATIONS
+// ------------------------------
 
-let focusTime = 25*60;
-let shortBreak = 5*60;
-let longBreak = 15*60;
+let focusTime = 25 * 60;
+let shortBreak = 5 * 60;
+let longBreak = 15 * 60;
 
 let totalTime = focusTime;
 let timeLeft = focusTime;
 
+let currentMode = "focus";
+
 let running = false;
-let interval;
+let interval = null;
 
 let sessionCount = 0;
 let minutesStudied = 0;
 
-// HTML Elements
+let completedSessions = 0;
+
+
+// ------------------------------
+// HTML ELEMENTS
+// ------------------------------
 
 const timer = document.getElementById("timer");
 const mode = document.getElementById("mode");
+
 const progress = document.querySelector(".progress");
+
 const startBtn = document.getElementById("startBtn");
+
+const alarmPanel = document.getElementById("alarmPanel");
+
 const stopVoiceBtn = document.getElementById("stopVoiceBtn");
 
 const circumference = 628;
@@ -272,10 +503,105 @@ const circumference = 628;
 progress.style.strokeDasharray = circumference;
 
 
-// VOICE ALERT FEATURE
+// ------------------------------
+// AUDIO ALARM
+// ------------------------------
+
+let audioContext = null;
+let alarmInterval = null;
+let alarmActive = false;
+
+function initializeAudio(){
+
+    if(!audioContext){
+
+        const AudioContextClass =
+            window.AudioContext || window.webkitAudioContext;
+
+        if(AudioContextClass){
+            audioContext = new AudioContextClass();
+        }
+
+    }
+
+    if(audioContext && audioContext.state === "suspended"){
+        audioContext.resume();
+    }
+
+}
+
+
+function playAlarmSound(){
+
+    if(!audioContext || !alarmActive) return;
+
+    const oscillator = audioContext.createOscillator();
+
+    const gain = audioContext.createGain();
+
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+
+    oscillator.type = "sine";
+
+    oscillator.frequency.value = 880;
+
+    gain.gain.setValueAtTime(
+        0.4,
+        audioContext.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        audioContext.currentTime + 0.6
+    );
+
+    oscillator.start();
+
+    oscillator.stop(audioContext.currentTime + 0.6);
+
+}
+
+
+function startAlarm(){
+
+    stopAlarm();
+
+    if(document.getElementById("alarmToggle").checked){
+
+        initializeAudio();
+
+        alarmActive = true;
+
+        playAlarmSound();
+
+        alarmInterval = setInterval(
+            playAlarmSound,
+            1200
+        );
+
+    }
+
+}
+
+
+function stopAlarm(){
+
+    alarmActive = false;
+
+    clearInterval(alarmInterval);
+
+    alarmInterval = null;
+
+}
+
+
+// ------------------------------
+// VOICE ALERT
+// ------------------------------
 
 let voiceActive = false;
-let voiceTimeout;
+let voiceTimeout = null;
 
 function startVoiceAlert(message){
 
@@ -298,7 +624,7 @@ function startVoiceAlert(message){
             if(voiceActive){
 
                 voiceTimeout = setTimeout(
-                    speakMessage, 1000
+                    speakMessage, 2000
                 );
 
             }
@@ -329,92 +655,131 @@ function stopVoiceAlert(){
 }
 
 
-// Stop Speaking Button
+function stopAllAlerts(){
 
-stopVoiceBtn.addEventListener(
-    "click",
-    stopVoiceAlert
-);
-
-
-// UPDATE TIMER
-
-function updateTimer(){
-
-    let mins = Math.floor(timeLeft/60);
-    let secs = timeLeft%60;
-
-    timer.textContent =
-    `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-
-    let percent = timeLeft/totalTime;
-
-    progress.style.strokeDashoffset =
-    circumference*(1-percent);
+    stopAlarm();
+    stopVoiceAlert();
 
 }
 
 
-// TIMER COMPLETION
+// ------------------------------
+// UPDATE TIMER
+// ------------------------------
 
-function completeTimer(){
+function updateTimer(){
+
+    let mins = Math.floor(timeLeft / 60);
+
+    let secs = timeLeft % 60;
+
+    timer.textContent =
+        `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+
+    let percent = totalTime > 0
+        ? timeLeft / totalTime
+        : 0;
+
+    progress.style.strokeDashoffset =
+        circumference * (1 - percent);
+
+}
+
+
+// ------------------------------
+// UPDATE SESSION DOTS
+// ------------------------------
+
+function updateDots(){
+
+    const dots = document.querySelectorAll(".dot");
+
+    dots.forEach((dot,index)=>{
+
+        dot.classList.toggle(
+            "active",
+            index < completedSessions % 4
+        );
+
+    });
+
+}
+
+
+// ------------------------------
+// SET TIMER MODE
+// ------------------------------
+
+function setMode(newMode){
+
+    stopAllAlerts();
 
     clearInterval(interval);
 
     running = false;
 
-    timeLeft = 0;
+    currentMode = newMode;
 
-    updateTimer();
+    alarmPanel.style.display = "none";
+
+    if(newMode === "focus"){
+
+        totalTime = focusTime;
+
+        mode.textContent = "FOCUS TIME";
+
+        document.getElementById("focusTab").classList.add("active");
+
+        document.getElementById("shortTab").classList.remove("active");
+
+        document.getElementById("longTab").classList.remove("active");
+
+    }
+
+    else if(newMode === "short"){
+
+        totalTime = shortBreak;
+
+        mode.textContent = "SHORT BREAK";
+
+        document.getElementById("shortTab").classList.add("active");
+
+        document.getElementById("focusTab").classList.remove("active");
+
+        document.getElementById("longTab").classList.remove("active");
+
+    }
+
+    else if(newMode === "long"){
+
+        totalTime = longBreak;
+
+        mode.textContent = "LONG BREAK";
+
+        document.getElementById("longTab").classList.add("active");
+
+        document.getElementById("focusTab").classList.remove("active");
+
+        document.getElementById("shortTab").classList.remove("active");
+
+    }
+
+    timeLeft = totalTime;
 
     startBtn.textContent = "Start";
 
-    // Focus completed
-
-    if(mode.textContent === "FOCUS TIME"){
-
-        sessionCount++;
-
-        minutesStudied += Math.floor(totalTime/60);
-
-        document.getElementById("sessions").textContent =
-        sessionCount;
-
-        document.getElementById("minutes").textContent =
-        minutesStudied;
-
-        startVoiceAlert(
-            "Focus session completed! Time for a break."
-        );
-
-    }
-
-    // Short break completed
-
-    else if(mode.textContent === "SHORT BREAK"){
-
-        startVoiceAlert(
-            "Short break is over! Time to focus."
-        );
-
-    }
-
-    // Long break completed
-
-    else if(mode.textContent === "LONG BREAK"){
-
-        startVoiceAlert(
-            "Long break is over! Time to focus."
-        );
-
-    }
+    updateTimer();
 
 }
 
 
-// START / PAUSE TIMER
+// ------------------------------
+// START TIMER
+// ------------------------------
 
 function startPause(){
+
+    initializeAudio();
 
     if(running){
 
@@ -428,13 +793,11 @@ function startPause(){
 
     }
 
-    // Stop any previous voice alert
+    stopAllAlerts();
 
-    stopVoiceAlert();
+    alarmPanel.style.display = "none";
 
-    if(timeLeft <= 0){
-        return;
-    }
+    if(timeLeft <= 0) return;
 
     running = true;
 
@@ -461,106 +824,395 @@ function startPause(){
 }
 
 
-// RESET TIMER
+// ------------------------------
+// TIMER COMPLETION
+// ------------------------------
 
-function resetTimer(){
-
-    stopVoiceAlert();
-
-    clearInterval(interval);
-
-    running = false;
-
-    startBtn.textContent = "Start";
-
-    timeLeft = totalTime;
-
-    updateTimer();
-
-}
-
-
-// CHANGE MODE
-
-function setMode(seconds,label,button){
-
-    stopVoiceAlert();
+function completeTimer(){
 
     clearInterval(interval);
 
-    running = false;
-
-    document.querySelectorAll(".tabs button")
-    .forEach(btn=>btn.classList.remove("active"));
-
-    button.classList.add("active");
-
-    timeLeft = seconds;
-
-    totalTime = seconds;
-
-    mode.textContent = label;
-
-    startBtn.textContent = "Start";
-
-    updateTimer();
-
-}
-
-
-// BUTTON EVENTS
-
-document.getElementById("startBtn")
-.addEventListener("click",startPause);
-
-
-document.getElementById("resetBtn")
-.addEventListener("click",resetTimer);
-
-
-document.getElementById("skipBtn")
-.addEventListener("click",()=>{
-
-    stopVoiceAlert();
-
-    clearInterval(interval);
+    interval = null;
 
     running = false;
-
-    startBtn.textContent = "Start";
 
     timeLeft = 0;
 
     updateTimer();
 
+    startBtn.textContent = "Start";
+
+
+    // FOCUS COMPLETED
+
+    if(currentMode === "focus"){
+
+        sessionCount++;
+
+        minutesStudied += Math.floor(totalTime / 60);
+
+        completedSessions++;
+
+        document.getElementById("sessions").textContent =
+            sessionCount;
+
+        document.getElementById("minutes").textContent =
+            minutesStudied;
+
+        updateDots();
+
+        // Automatically start break
+
+        if(completedSessions % 4 === 0){
+
+            setMode("long");
+
+        }else{
+
+            setMode("short");
+
+        }
+
+        // Automatically start break countdown
+
+        startPause();
+
+        startVoiceAlert(
+            "Focus completed! Your break has started."
+        );
+
+    }
+
+
+    // BREAK COMPLETED
+
+    else{
+
+        timeLeft = 0;
+
+        updateTimer();
+
+        alarmPanel.style.display = "block";
+
+        startBtn.textContent = "Start";
+
+        startAlarm();
+
+        startVoiceAlert(
+            "Your break is over! Time to start studying."
+        );
+
+    }
+
+}
+
+
+// ------------------------------
+// RESET TIMER
+// ------------------------------
+
+function resetTimer(){
+
+    stopAllAlerts();
+
+    clearInterval(interval);
+
+    running = false;
+
+    alarmPanel.style.display = "none";
+
+    timeLeft = totalTime;
+
+    startBtn.textContent = "Start";
+
+    updateTimer();
+
+}
+
+
+// ------------------------------
+// START STUDYING
+// ------------------------------
+
+function startStudying(){
+
+    stopAllAlerts();
+
+    clearInterval(interval);
+
+    alarmPanel.style.display = "none";
+
+    setMode("focus");
+
+    startPause();
+
+}
+
+
+// ------------------------------
+// SNOOZE FEATURE
+// ------------------------------
+
+function snoozeBreak(minutes){
+
+    stopAllAlerts();
+
+    clearInterval(interval);
+
+    running = false;
+
+    alarmPanel.style.display = "none";
+
+    // Add extra break time
+
+    totalTime = minutes * 60;
+
+    timeLeft = totalTime;
+
+    mode.textContent = "SNOOZE BREAK";
+
+    currentMode = "short";
+
+    startBtn.textContent = "Start";
+
+    updateTimer();
+
+    // Automatically resume break
+
+    startPause();
+
+}
+
+
+// ------------------------------
+// TIMER SETTINGS
+// ------------------------------
+
+const settingsBtn = document.getElementById("settingsBtn");
+
+const settingsPanel = document.getElementById("settingsPanel");
+
+
+settingsBtn.addEventListener("click",()=>{
+
+    settingsPanel.style.display =
+        settingsPanel.style.display === "block"
+        ? "none"
+        : "block";
+
+});
+
+
+document.getElementById("saveSettings")
+.addEventListener("click",()=>{
+
+    const focusValue =
+        Number(document.getElementById("focusInput").value);
+
+    const shortValue =
+        Number(document.getElementById("shortInput").value);
+
+    const longValue =
+        Number(document.getElementById("longInput").value);
+
+
+    if(
+        !Number.isInteger(focusValue) ||
+        !Number.isInteger(shortValue) ||
+        !Number.isInteger(longValue) ||
+        focusValue < 1 || focusValue > 180 ||
+        shortValue < 1 || shortValue > 60 ||
+        longValue < 1 || longValue > 60
+    ){
+
+        alert("Please enter valid durations.");
+
+        return;
+
+    }
+
+
+    focusTime = focusValue * 60;
+
+    shortBreak = shortValue * 60;
+
+    longBreak = longValue * 60;
+
+
+    // Save settings in browser
+
+    localStorage.setItem("focusTime",focusValue);
+
+    localStorage.setItem("shortBreak",shortValue);
+
+    localStorage.setItem("longBreak",longValue);
+
+    localStorage.setItem(
+        "alarmEnabled",
+        document.getElementById("alarmToggle").checked
+    );
+
+
+    // Reset current timer to updated duration
+
+    if(!running){
+
+        if(currentMode === "focus"){
+            setMode("focus");
+        }
+
+        else if(currentMode === "short"){
+            setMode("short");
+        }
+
+        else if(currentMode === "long"){
+            setMode("long");
+        }
+
+    }
+
+    settingsPanel.style.display = "none";
+
+    alert("Timer settings saved successfully!");
+
+});
+
+
+// ------------------------------
+// LOAD SAVED SETTINGS
+// ------------------------------
+
+function loadSettings(){
+
+    const savedFocus = localStorage.getItem("focusTime");
+
+    const savedShort = localStorage.getItem("shortBreak");
+
+    const savedLong = localStorage.getItem("longBreak");
+
+    const savedAlarm = localStorage.getItem("alarmEnabled");
+
+
+    if(savedFocus && Number(savedFocus) >= 1 &&
+       Number(savedFocus) <= 180){
+
+        focusTime = Number(savedFocus) * 60;
+
+    }
+
+    if(savedShort && Number(savedShort) >= 1 &&
+       Number(savedShort) <= 60){
+
+        shortBreak = Number(savedShort) * 60;
+
+    }
+
+    if(savedLong && Number(savedLong) >= 1 &&
+       Number(savedLong) <= 60){
+
+        longBreak = Number(savedLong) * 60;
+
+    }
+
+
+    document.getElementById("focusInput").value =
+        focusTime / 60;
+
+    document.getElementById("shortInput").value =
+        shortBreak / 60;
+
+    document.getElementById("longInput").value =
+        longBreak / 60;
+
+
+    if(savedAlarm !== null){
+
+        document.getElementById("alarmToggle").checked =
+            savedAlarm === "true";
+
+    }
+
+}
+
+
+// ------------------------------
+// BUTTON EVENTS
+// ------------------------------
+
+startBtn.addEventListener("click",startPause);
+
+document.getElementById("resetBtn")
+.addEventListener("click",resetTimer);
+
+stopVoiceBtn.addEventListener("click",()=>{
+
+    stopAllAlerts();
+
+});
+
+document.getElementById("studyBtn")
+.addEventListener("click",startStudying);
+
+document.getElementById("snooze5")
+.addEventListener("click",()=>snoozeBreak(5));
+
+document.getElementById("snooze10")
+.addEventListener("click",()=>snoozeBreak(10));
+
+
+document.getElementById("skipBtn")
+.addEventListener("click",()=>{
+
+    stopAllAlerts();
+
+    clearInterval(interval);
+
+    running = false;
+
+    alarmPanel.style.display = "none";
+
+    if(currentMode === "focus"){
+
+        // Skip focus and move to next break
+
+        if(completedSessions % 4 === 3){
+
+            setMode("long");
+
+        }else{
+
+            setMode("short");
+
+        }
+
+    }
+
+    else{
+
+        setMode("focus");
+
+    }
+
 });
 
 
 document.getElementById("focusTab")
-.addEventListener("click",(event)=>{
-
-    setMode(focusTime,"FOCUS TIME",event.currentTarget);
-
-});
-
+.addEventListener("click",()=>setMode("focus"));
 
 document.getElementById("shortTab")
-.addEventListener("click",(event)=>{
-
-    setMode(shortBreak,"SHORT BREAK",event.currentTarget);
-
-});
-
+.addEventListener("click",()=>setMode("short"));
 
 document.getElementById("longTab")
-.addEventListener("click",(event)=>{
-
-    setMode(longBreak,"LONG BREAK",event.currentTarget);
-
-});
+.addEventListener("click",()=>setMode("long"));
 
 
-// INITIAL TIMER
+// ------------------------------
+// INITIALIZE
+// ------------------------------
+
+loadSettings();
+
+setMode("focus");
 
 updateTimer();
 
@@ -568,4 +1220,3 @@ updateTimer();
 
 </body>
 </html>
-```
